@@ -3,6 +3,8 @@
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { useRef } from "react";
+import { Toast } from "primereact/toast";
 
 export default function LoginPage() {
   const {
@@ -11,6 +13,7 @@ export default function LoginPage() {
     formState: { errors },
   } = useForm();
   const router = useRouter();
+  const msgs = useRef(null);
 
   const onSubmit = async (data) => {
     try {
@@ -22,13 +25,21 @@ export default function LoginPage() {
       if (response.status === 200) {
         router.push("/dashboard");
       }
+      console.log(response.data, ">> login");
     } catch (error) {
-      alert("Login failed! Please check your username and password.");
+      msgs.current.show({
+        sticky: true,
+        severity: "error",
+        summary: "Error",
+        detail: "Login gagal! Periksa username dan password Anda.",
+        closable: false,
+      });
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
+      <Toast ref={msgs} />
       <div className="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
         <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
           <div>
