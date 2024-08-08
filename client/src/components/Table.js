@@ -1,4 +1,49 @@
+"use client";
+
+import axios from "axios";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
+
 export default function Table() {
+  const [searchUser, setSearchUser] = useState("");
+
+  const fetchUsers = async (req, res) => {
+    try {
+      const { data } = await axios.get("https://dummyjson.com/users/search", {
+        params: { q: searchUser },
+      });
+      return data.users;
+    } catch (error) {
+      console.log(error, "error fetching users");
+      throw error;
+    }
+  };
+
+  const { data, error, isLoading, refetch } = useQuery(
+    ["users", fetchUsers],
+    () => fetchUsers(searchUser),
+    { enabled: true }
+  );
+
+  useEffect(() => {
+    if (searchUser !== "") {
+      refetch();
+    }
+  }, [searchUser, refetch]);
+
+  if (isLoading) {
+    return (
+      <p className="flex items-center justify-center min-h-screen">
+        <span className="loading loading-spinner text-neutral"></span>
+      </p>
+    );
+  }
+
+  if (error) {
+    return <p>Error loading users</p>;
+  }
+
   return (
     <div className="flex flex-col p-4">
       <div className="overflow-x-auto">
@@ -24,7 +69,9 @@ export default function Table() {
               type="text"
               id="default-search"
               className="block w-80 h-11 pl-12 pr-4 py-2.5 text-base font-normal shadow-xs text-gray-900 bg-white border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Search for company"
+              placeholder="Search for User"
+              value={searchUser}
+              onChange={(e) => setSearchUser(e.target.value)}
             />
           </div>
           {/* table */}
@@ -65,23 +112,28 @@ export default function Table() {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                <tr className="hover:bg-gray-50 transition-all duration-200">
-                  <td className="p-5 whitespace-nowrap text-sm font-medium text-gray-900">
-                    Louis Vuitton
-                  </td>
-                  <td className="p-5 whitespace-nowrap text-sm text-gray-900">
-                    20010510
-                  </td>
-                  <td className="p-5 whitespace-nowrap text-sm text-gray-900">
-                    Customer
-                  </td>
-                  <td className="p-5 whitespace-nowrap text-sm text-gray-900">
-                    Accessories
-                  </td>
-                  <td className="p-5 whitespace-nowrap text-sm text-blue-600 hover:underline cursor-pointer">
-                    Lihat
-                  </td>
-                </tr>
+                {data.map((user, idx) => (
+                  <tr className="hover:bg-gray-50 transition-all duration-200">
+                    <td
+                      className="p-5 whitespace-nowrap text-sm font-medium text-gray-900"
+                      key={idx}
+                    >
+                      {user.firstName} {user.lastName}
+                    </td>
+                    <td className="p-5 whitespace-nowrap text-sm text-gray-900">
+                      {user.username}
+                    </td>
+                    <td className="p-5 whitespace-nowrap text-sm text-gray-900">
+                      {user.password}
+                    </td>
+                    <td className="p-5 whitespace-nowrap text-sm text-gray-900">
+                      {user.age}
+                    </td>
+                    <td className="p-5 whitespace-nowrap text-sm text-blue-600 hover:underline cursor-pointer">
+                      <Link href={`/dashboard/${user.id}`}>Lihat</Link>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>

@@ -17,6 +17,7 @@ import {
   PowerIcon,
 } from "@heroicons/react/24/solid";
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 export default function Sidebar() {
   const [open, setOpen] = React.useState(0);
@@ -37,9 +38,9 @@ export default function Sidebar() {
           <ListItemPrefix>
             <PresentationChartBarIcon className="h-5 w-5" />
           </ListItemPrefix>
-          <Typography color="blue-gray" className="mr-auto font-normal">
+          <Link color="blue-gray" className="mr-auto font-normal" href="/dashboard">
             Dashboard
-          </Typography>
+          </Link>
         </ListItem>
         <Accordion
           open={open === 1}
@@ -71,7 +72,7 @@ export default function Sidebar() {
                 <ListItemPrefix>
                   <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
                 </ListItemPrefix>
-                Users
+                User List
               </ListItem>
             </List>
           </AccordionBody>
