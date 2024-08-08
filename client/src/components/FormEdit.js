@@ -1,6 +1,6 @@
 "use client";
 
-export default function FormEdit() {
+export default function FormEdit({ register, handleSubmit, onSubmit, errors }) {
   return (
     <div className="w-full min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
       <div className="container mx-auto px-4 py-8">
@@ -8,7 +8,7 @@ export default function FormEdit() {
           Edit Profile
         </h1>
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label
@@ -21,9 +21,16 @@ export default function FormEdit() {
                   type="text"
                   id="firstName"
                   name="firstName"
+                  {...register("firstName", {
+                    required: "First name is required",
+                  })}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  placeholder="John"
                 />
+                {errors.firstName && (
+                  <p className="text-red-500 text-xs">
+                    {errors.firstName.message}
+                  </p>
+                )}
               </div>
               <div>
                 <label
@@ -36,39 +43,33 @@ export default function FormEdit() {
                   type="text"
                   id="lastName"
                   name="lastName"
+                  {...register("lastName", {
+                    required: "Last name is required",
+                  })}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  placeholder="Doe"
                 />
+                {errors.lastName && (
+                  <p className="text-red-500 text-xs">
+                    {errors.lastName.message}
+                  </p>
+                )}
               </div>
             </div>
             <div>
               <label
-                htmlFor="location"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-              >
-                Location
-              </label>
-              <input
-                type="text"
-                id="location"
-                name="location"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="City, Country"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="phoneNumber"
+                htmlFor="phone"
                 className="block text-sm font-medium text-gray-700 dark:text-gray-300"
               >
                 Phone Number
               </label>
               <input
                 type="tel"
-                id="phoneNumber"
-                name="phoneNumber"
+                id="phone"
+                name="phone"
+                {...register("phone", {
+                  required: "Last name is required",
+                })}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="+1 234 567 890"
               />
             </div>
             <div>
@@ -82,9 +83,12 @@ export default function FormEdit() {
                 type="email"
                 id="email"
                 name="email"
+                {...register("email", { required: "Email is required" })}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="example@example.com"
               />
+              {errors.email && (
+                <p className="text-red-500 text-xs">{errors.email.message}</p>
+              )}
             </div>
             <div className="flex justify-end mt-6">
               <button
