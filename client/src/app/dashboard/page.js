@@ -11,7 +11,7 @@ export default function DashboardPage() {
     <div className="flex min-h-screen">
       <Sidebar />
       <div className="flex-1 p-4 bg-gray-100">
-        <h1 className="text-3xl font-bold m-5">User</h1>
+        <h1 className="text-3xl font-bold m-5">User List</h1>
         <Table />
       </div>
     </div>
