@@ -1,66 +1,8 @@
 "use client";
 
-import axios from "axios";
 import Link from "next/link";
-import { useEffect, useRef } from "react";
-import { useQuery } from "react-query";
 
-export default function Table({
-  searchUser,
-  setSearchUser,
-  sortOrder,
-  setSortOrder,
-}) {
-  const searchInputRef = useRef(null);
-
-  const fetchUsers = async (searchUser, sortOrder) => {
-    try {
-      const { data } = await axios.get("https://dummyjson.com/users/search", {
-        params: { q: searchUser, sortBy: "firstName", order: sortOrder },
-      });
-
-      // console.log(data, "dataaaa userr");
-
-      return data.users;
-    } catch (error) {
-      console.log(error, "error fetching users");
-      throw error;
-    }
-  };
-
-  const { data, error, isLoading, refetch } = useQuery(
-    ["users", searchUser, sortOrder],
-    () => fetchUsers(searchUser, sortOrder),
-    { enabled: true }
-  );
-
-  useEffect(() => {
-    const delayDebounce = setTimeout(() => {
-      if (searchUser !== "") {
-        refetch();
-      }
-    }, 500);
-    return () => clearTimeout(delayDebounce);
-  }, [searchUser, sortOrder, refetch]);
-
-  useEffect(() => {
-    if (searchInputRef.current) {
-      searchInputRef.current.focus();
-    }
-  }, [data]);
-
-  if (isLoading) {
-    return (
-      <p className="flex items-center justify-center min-h-screen">
-        <span className="loading loading-spinner text-neutral"></span>
-      </p>
-    );
-  }
-
-  if (error) {
-    return <p>Error loading users: {error.message}</p>;
-  }
-
+export default function Table({ data, searchInputRef, searchUser, setSearchUser, sortOrder, setSortOrder }) {
   return (
     <div className="flex flex-col p-4">
       <div className="overflow-x-auto">
