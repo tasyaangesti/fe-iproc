@@ -3,6 +3,7 @@
 import { useQuery } from "react-query";
 import axios from "axios";
 import DetailUser from "@/components/DetailUser";
+import Link from "next/link";
 
 export default function DashboardId({ params }) {
   const { id } = params;
@@ -40,6 +41,9 @@ export default function DashboardId({ params }) {
         <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-8">
           My Profile
         </h1>
+        <div className="flex justify-end mb-4 text-blue-600 hover:underline">
+          <Link href={`/dashboard/edit/${id}`}>Edit</Link>
+        </div>
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
           <DetailUser user={data} />
         </div>
