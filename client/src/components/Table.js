@@ -2,15 +2,18 @@
 
 import axios from "axios";
 import Link from "next/link";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useQuery } from "react-query";
 
-export default function Table() {
-  const [searchUser, setSearchUser] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
+export default function Table({
+  searchUser,
+  setSearchUser,
+  sortOrder,
+  setSortOrder,
+}) {
   const searchInputRef = useRef(null);
 
-  const fetchUsers = async () => {
+  const fetchUsers = async (searchUser, sortOrder) => {
     try {
       const { data } = await axios.get("https://dummyjson.com/users/search", {
         params: { q: searchUser, sortBy: "firstName", order: sortOrder },
@@ -27,7 +30,7 @@ export default function Table() {
 
   const { data, error, isLoading, refetch } = useQuery(
     ["users", searchUser, sortOrder],
-    fetchUsers,
+    () => fetchUsers(searchUser, sortOrder),
     { enabled: true }
   );
 
@@ -36,7 +39,7 @@ export default function Table() {
       if (searchUser !== "") {
         refetch();
       }
-    }, 1000);
+    }, 500);
     return () => clearTimeout(delayDebounce);
   }, [searchUser, sortOrder, refetch]);
 
