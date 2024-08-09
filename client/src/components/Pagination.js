@@ -1,20 +1,24 @@
+import React from "react";
+import { Paginator } from "primereact/paginator";
 
-import React, { useState } from "react";
-import { Paginator } from 'primereact/paginator';
+export default function Pagination({
+  currentPage,
+  onPageChange,
+  totalRecords,
+}) {
+  const onPageChangeHandler = (event) => {
+    onPageChange(event.page + 1);
+  };
 
-export default function Pagination() {
-    const [first, setFirst] = useState(0);
-    const [rows, setRows] = useState(10);
-
-    const onPageChange = (event) => {
-        setFirst(event.first);
-        setRows(event.rows);
-    };
-
-    return (
-        <div className="card">
-            <Paginator first={first} rows={rows} totalRecords={120} rowsPerPageOptions={[10, 20, 30]} onPageChange={onPageChange} />
-        </div>
-    );
+  return (
+    <div className="card mt-4">
+      <Paginator
+        first={(currentPage - 1) * 10}
+        rows={10}
+        totalRecords={totalRecords}
+        rowsPerPageOptions={[10, 20, 30]}
+        onPageChange={onPageChangeHandler}
+      />
+    </div>
+  );
 }
-        

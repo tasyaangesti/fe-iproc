@@ -1,5 +1,6 @@
 "use client";
 
+import Pagination from "@/components/Pagination";
 import Sidebar from "@/components/Sidebar";
 import Table from "@/components/Table";
 import axios from "axios";
@@ -11,16 +12,24 @@ import { useQuery } from "react-query";
 export default function DashboardPage() {
   const [searchUser, setSearchUser] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
+  const [page, setPage] = useState(1);
+  const [totalRecords, setTotalRecords] = useState(0);
   const searchInputRef = useRef(null);
   const router = useRouter();
 
   const fetchUsers = async (searchUser, sortOrder) => {
     try {
       const { data } = await axios.get("https://dummyjson.com/users/search", {
-        params: { q: searchUser, sortBy: "firstName", order: sortOrder },
+        params: {
+          q: searchUser,
+          sortBy: "firstName",
+          order: sortOrder,
+          skip: (page - 1) * 10,
+          limit: 10,
+        },
       });
       console.log(data, "data userr");
-
+      setTotalRecords(data.total);
       return data.users;
     } catch (error) {
       console.log(error, "error fetching users");
@@ -29,8 +38,8 @@ export default function DashboardPage() {
   };
 
   const { data, error, isLoading, refetch } = useQuery(
-    ["users", searchUser, sortOrder],
-    () => fetchUsers(searchUser, sortOrder),
+    ["users", searchUser, sortOrder, page],
+    () => fetchUsers(searchUser, sortOrder, page),
     { enabled: true }
   );
 
@@ -41,7 +50,7 @@ export default function DashboardPage() {
       }
     }, 500);
     return () => clearTimeout(delayDebounce);
-  }, [searchUser, sortOrder, refetch]);
+  }, [searchUser, sortOrder, page, refetch]);
 
   useEffect(() => {
     if (searchInputRef.current) {
@@ -82,6 +91,11 @@ export default function DashboardPage() {
           setSearchUser={setSearchUser}
           sortOrder={sortOrder}
           setSortOrder={setSortOrder}
+        />
+        <Pagination
+          currentPage={page}
+          onPageChange={setPage}
+          totalRecords={totalRecords}
         />
       </div>
     </div>
