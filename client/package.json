@@ -22,7 +22,8 @@
     "react-dom": "^18",
     "react-hook-form": "^7.52.2",
     "react-query": "^3.39.3",
-    "react-redux": "^9.1.2"
+    "react-redux": "^9.1.2",
+    "redux": "^5.0.1"
   },
   "devDependencies": {
     "daisyui": "^4.12.10",
