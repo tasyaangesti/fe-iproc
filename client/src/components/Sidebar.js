@@ -18,12 +18,23 @@ import {
 } from "@heroicons/react/24/solid";
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Sidebar() {
   const [open, setOpen] = React.useState(0);
+  const router = useRouter();
 
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    console.log("logouttt");
+
+    router.push("/login");
   };
 
   return (
@@ -38,7 +49,11 @@ export default function Sidebar() {
           <ListItemPrefix>
             <PresentationChartBarIcon className="h-5 w-5" />
           </ListItemPrefix>
-          <Link color="blue-gray" className="mr-auto font-normal" href="/dashboard">
+          <Link
+            color="blue-gray"
+            className="mr-auto font-normal"
+            href="/dashboard"
+          >
             Dashboard
           </Link>
         </ListItem>
@@ -77,7 +92,7 @@ export default function Sidebar() {
             </List>
           </AccordionBody>
         </Accordion>
-        <ListItem>
+        <ListItem onClick={handleLogout}>
           <ListItemPrefix>
             <PowerIcon className="h-5 w-5" />
           </ListItemPrefix>

@@ -1,11 +1,11 @@
 "use client";
 
-import FormEdit from "@/components/FormEdit";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Form from "@/components/Form";
 
 export default function EditPage({ params }) {
   const { id } = params;
@@ -39,8 +39,9 @@ export default function EditPage({ params }) {
     defaultValues: {
       firstName: "",
       lastName: "",
-      phone: "",
-      email: "",
+      password: "",
+      username: "",
+      age: "",
     },
   });
 
@@ -58,15 +59,19 @@ export default function EditPage({ params }) {
           formData
         );
         console.log(response.data, "dataa mutationn");
+
         return response.data;
       } catch (error) {
-        console.error(error, "errorr edit");
+        console.error(error);
         throw error;
       }
     },
     {
       onSuccess: () => {
+        console.log("updettt");
+
         queryClient.invalidateQueries(["user", id]);
+        queryClient.refetchQueries(["user", id]);
         router.push(`/dashboard/${id}`);
       },
     }
@@ -93,11 +98,13 @@ export default function EditPage({ params }) {
 
   return (
     <div>
-      <FormEdit
+      <Form
         register={register}
         handleSubmit={handleSubmit}
         onSubmit={onSubmit}
         errors={errors}
+        title="Edit Profile"
+        submitButtonText="Save Changes"
       />
     </div>
   );

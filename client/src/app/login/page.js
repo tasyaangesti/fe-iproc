@@ -3,7 +3,7 @@
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Toast } from "primereact/toast";
 
 export default function LoginPage() {
@@ -23,6 +23,10 @@ export default function LoginPage() {
       });
 
       if (response.status === 200) {
+        console.log(response.data.token, ">> token");
+
+        localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data));
         router.push("/dashboard");
       }
       console.log(response.data, ">> login");
@@ -36,6 +40,15 @@ export default function LoginPage() {
       });
     }
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    // console.log(token, ">> udh login");
+
+    if (token) {
+      router.push("/dashboard");
+    }
+  }, [router]);
 
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">

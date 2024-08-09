@@ -3,6 +3,8 @@
 import Sidebar from "@/components/Sidebar";
 import Table from "@/components/Table";
 import axios from "axios";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
 import { useQuery } from "react-query";
 
@@ -10,12 +12,14 @@ export default function DashboardPage() {
   const [searchUser, setSearchUser] = useState("");
   const [sortOrder, setSortOrder] = useState("asc");
   const searchInputRef = useRef(null);
+  const router = useRouter();
 
   const fetchUsers = async (searchUser, sortOrder) => {
     try {
       const { data } = await axios.get("https://dummyjson.com/users/search", {
         params: { q: searchUser, sortBy: "firstName", order: sortOrder },
       });
+      console.log(data, "data userr");
 
       return data.users;
     } catch (error) {
@@ -44,6 +48,15 @@ export default function DashboardPage() {
       searchInputRef.current.focus();
     }
   }, [data]);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    // console.log(token, ">> dashhhh");
+
+    if (!token) {
+      router.push("/login");
+    }
+  }, [router]);
 
   if (isLoading) {
     return (

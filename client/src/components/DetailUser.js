@@ -40,15 +40,9 @@ export default function DetailUser({ user }) {
                   </div>
                   <div className="py-3">
                     <dt className="text-gray-500 md:text-lg dark:text-gray-400">
-                      Date Of Birth
+                      Age
                     </dt>
-                    <dd className="text-lg font-semibold">{user.birthDate}</dd>
-                  </div>
-                  <div className="py-3">
-                    <dt className="text-gray-500 md:text-lg dark:text-gray-400">
-                      Gender
-                    </dt>
-                    <dd className="text-lg font-semibold">{user.gender}</dd>
+                    <dd className="text-lg font-semibold">{user.age}</dd>
                   </div>
                 </dl>
               </div>
@@ -56,23 +50,15 @@ export default function DetailUser({ user }) {
                 <dl className="text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
                   <div className="py-3">
                     <dt className="text-gray-500 md:text-lg dark:text-gray-400">
-                      Location
+                      Username
                     </dt>
-                    <dd className="text-lg font-semibold">
-                      {user.address?.country}
-                    </dd>
+                    <dd className="text-lg font-semibold">{user.username}</dd>
                   </div>
                   <div className="py-3">
                     <dt className="text-gray-500 md:text-lg dark:text-gray-400">
-                      Phone Number
+                      Password
                     </dt>
-                    <dd className="text-lg font-semibold">{user.phone}</dd>
-                  </div>
-                  <div className="py-3">
-                    <dt className="text-gray-500 md:text-lg dark:text-gray-400">
-                      Email
-                    </dt>
-                    <dd className="text-lg font-semibold">{user.email}</dd>
+                    <dd className="text-lg font-semibold">{user.password}</dd>
                   </div>
                 </dl>
               </div>

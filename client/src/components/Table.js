@@ -2,11 +2,24 @@
 
 import Link from "next/link";
 
-export default function Table({ data, searchInputRef, searchUser, setSearchUser, sortOrder, setSortOrder }) {
+export default function Table({
+  data,
+  searchInputRef,
+  searchUser,
+  setSearchUser,
+  sortOrder,
+  setSortOrder,
+}) {
   return (
     <div className="flex flex-col p-4">
       <div className="overflow-x-auto">
         <div className="min-w-full inline-block align-middle">
+          <button
+            type="button"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          >
+            <Link href={`/add-user`}>Add User</Link>
+          </button>
           <div className="flex flex-row justify-between gap-10">
             {/* search */}
             <div className="relative text-gray-500 focus-within:text-gray-900 mb-4">
